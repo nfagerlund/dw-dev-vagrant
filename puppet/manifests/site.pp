@@ -241,6 +241,38 @@ vcsrepo {'dw-nonfree':
   },
 }
 
+
+file {'ext-local':
+  path => "${ljhome}/ext/local",
+  ensure => directory,
+  require => Vcsrepo['dw-free'],
+  owner => $dw_user,
+  group => $dw_user,
+}
+
+file {'ext-local-scope':
+  path => "${ljhome}/ext/local/.dir_scope",
+  ensure => file,
+  content => "highest\n",
+  owner => $dw_user,
+  group => $dw_user,
+}
+
+file {'ext-local-etc':
+  path => "${ljhome}/ext/local/etc",
+  ensure => directory,
+  owner => $dw_user,
+  group => $dw_user,
+}
+
+file {'config-local.pl':
+  path => "${ljhome}/ext/local/etc/config-local.pl",
+  ensure => file,
+  content => epp('dw_dev/config-local.epp', {'developer' => $developer_github}),
+  owner => $dw_user,
+  group => $dw_user,
+}
+
 mysql::db {'dw':
   user => $dw_db_user,
   password => $dw_db_user_password,

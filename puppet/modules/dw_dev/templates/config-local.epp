@@ -1,3 +1,6 @@
+<%- |
+  String $developer,
+| -%>
 #!/usr/bin/perl
 # -*-perl-*-
 
@@ -40,12 +43,13 @@
 
     # human readable name of this site as well as shortened versions
     # CHANGE THIS
-    $SITENAME = "A New Dreamwidth Installation";
-    $SITENAMESHORT = "YourSite";
-    $SITENAMEABBREV = "YS";
-    $SITECOMPANY = "YourSite's Company";
-    $SITEADDRESS = "123 Main St.<br />Somewhere, XX 12345";
-    $SITEADDRESSLINE = "123 Main St. Somewhere, XX 12345";
+    $SITENAME = "Dreamwidth dev install for <%= $developer %>";
+    $SITENAMESHORT = "<%= $developer %>Journal";
+    $SITENAMEABBREV = "<%= $developer[0] %>J";
+    $SITECOMPANY = "<%= $developer %> Consolidated";
+    $SITEADDRESS = "665 Main St.<br />Heck, WA 98503";
+    $SITEADDRESSLINE = "665 Main St. Heck, WA 98503";
+    $STATDOCS = "$HOME/build/static";
 
     # supported languages (defaults to qw(en) if none given)
     # First element is default language for user interface, untranslated text
