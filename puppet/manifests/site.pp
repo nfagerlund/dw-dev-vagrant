@@ -215,6 +215,8 @@ Vcsrepo {
 vcsrepo {'dw-free':
   path => $ljhome,
   ensure => present,
+  owner => $dw_user,
+  group => $dw_user,
   provider => git,
   revision => 'develop',
   remote => $developer_github,
@@ -227,6 +229,8 @@ vcsrepo {'dw-free':
 vcsrepo {'dw-nonfree':
   path => "${ljhome}/ext/dw-nonfree",
   ensure => present,
+  owner => $dw_user,
+  group => $dw_user,
   require => Vcsrepo['dw-free'],
   provider => git,
   revision => 'develop',
