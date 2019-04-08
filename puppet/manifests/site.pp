@@ -89,11 +89,22 @@ $base_packages = [
   'libnet-oauth-perl',
   'libnet-smtps-perl',
   'libxmlrpc-lite-perl',
+  'default-jre',
 ]
 
 package {$base_packages:
   provider => apt,
   ensure => present,
+}
+
+package {'sass':
+  provider => gem,
+  ensure => '3.2.19',
+}
+
+package {'compass':
+  provider => gem,
+  ensure => '0.12.2',
 }
 
 include postfix
