@@ -188,7 +188,7 @@ class {'mysql::server':
   service_manage => true,
   override_options => {
     mysqld => {
-      sql_mode => "",
+      sql_mode => "''",
     }
   }
 }
