@@ -1,0 +1,19 @@
+{
+  "Gemfile": "b2fbd5ce2017d5e2f1d9a5a05196e923",
+  "LICENSE": "8f7bb094c7232b058c7e9f2e431f389c",
+  "README.md": "77e4ba75822b2dfbc196644bc499f118",
+  "Rakefile": "53e84d9efa091fbef357c9bb4486c4a7",
+  "lib/puppet/provider/cpan/default.rb": "13cac9724401240d05abba52fb2f4e5d",
+  "lib/puppet/type/cpan.rb": "1f5eb191927811410c86ac8045123dd6",
+  "manifests/config.pp": "0853d846f38f1100cf5b9abd2c03ba4a",
+  "manifests/init.pp": "00b5dd63d2ff8f5048b37475f7afd07f",
+  "manifests/install.pp": "0dc809fbda9b555e7d5707ecf4424689",
+  "manifests/params.pp": "f092c413746ac631762d29bad20511f3",
+  "metadata.json": "1565b67c8c742175a75795001e48d393",
+  "spec/classes/cpan_spec.rb": "57a85adae59152c8d5b6a3327016117a",
+  "spec/spec_helper.rb": "57bc3bdd2f14a2f6720542486aec423a",
+  "templates/cpan.conf.erb": "ea900d1bdeb43df213bcd0f725def982",
+  "test/local_lib.pp": "075061e866171e72a495b2fcc2d96a5c",
+  "test/local_lib_default.pp": "bcd4b4721e29630d86b9e8129f110000",
+  "test/no_local_lib.pp": "ed8685dc296675492bede9cecf8a32c6"
+}
