@@ -8,6 +8,8 @@ $root_db_user_password = 'aoeuhtns'
 
 $ljhome = "/home/${dw_user}/dw"
 $developer_github = 'nfagerlund'
+$developer_name = 'Nick Fagerlund'
+$developer_email = 'nick.fagerlund@gmail.com'
 
 
 notify {"sup":}
@@ -201,6 +203,23 @@ user {$dw_user:
 
 file {$ljhome:
   ensure => directory,
+}
+
+file {'gitconfig':
+  ensure => file,
+  path => "/home/${dw_user}/.gitconfig",
+  content => epp('dw_dev/gitconfig.epp', {
+    'developer_name' => $developer_name,
+    'developer_email' => $developer_email,
+  }),
+  owner => $dw_user,
+  group => $dw_user,
+}
+
+file_line {'g':
+  ensure => present,
+  path => "/home/${dw_user}/.profile",
+  line => "alias g='git'",
 }
 
 file_line {'ljhome':

@@ -1,0 +1,37 @@
+<%- |
+  String $developer_name,
+  String $developer_email,
+| -%>
+[user]
+    name = <%= $developer_name %>
+    email = <%= $developer_email %>
+[color]
+    ui = true
+[alias]
+    st = status
+    s = status --short
+    ci = commit
+    br = branch
+    co = checkout
+    a = add
+    addnice = !cd -- \"${GIT_PREFIX:-.}\" && git diff -U0 -w --no-color -- \"$@\" | git apply --cached --ignore-whitespace --unidiff-zero - "#"
+        # https://stackoverflow.com/questions/3515597/add-only-non-whitespace-changes/39487648#39487648
+    f = fetch
+    lg = "log --pretty=format:'%C(yellow)%h%C(reset) %s %C(cyan)%cr%C(reset) %C(blue)%an%C(reset) %C(green)%d%C(reset)' --graph"
+    wdiff = diff --word-diff=color --ignore-space-at-eol --word-diff-regex='[[:alnum:]]+|[^[:space:][:alnum:]]+'
+    wd = wdiff
+    wshow = show --word-diff=color --ignore-space-at-eol --word-diff-regex='[[:alnum:]]+|[^[:space:][:alnum:]]+'
+    unstage = reset HEAD --
+    ff = merge --ff-only
+    sup = submodule update
+    suppp = submodule update --init
+    dammit = remote rename origin upstream
+    rabies = rebase
+[merge]
+    defaultToUpstream = true
+[push]
+    default = upstream
+[diff]
+    wsErrorHighlight = all
+[pager]
+    branch = false
