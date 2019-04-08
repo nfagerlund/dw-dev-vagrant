@@ -1,3 +1,14 @@
+
+$dw_user = 'dw'
+# $dw_user_password = "" # actually, just don't.
+$dw_db_user = $dw_user # meh
+$dw_db_user_password = 'snthueoa'
+$root_db_user_password = 'aoeuhtns'
+
+$ljhome = "/home/$dw_user/dw"
+$developer_github = 'nfagerlund'
+
+
 notify {"sup":}
 
 $base_packages = [
@@ -168,7 +179,7 @@ $cpan_packgaes = [
 cpan {$cpan_packgaes:}
 
 class {'mysql::server':
-  root_password => 'aoeuhtns',
+  root_password => $root_db_user_password,
   package_ensure => present,
   service_enabled => true,
   service_manage => true,
@@ -179,58 +190,62 @@ class {'mysql::server':
   }
 }
 
-user {'dw':
+user {$dw_user:
   ensure => present,
   groups => ['sudo'],
   managehome => true,
-  home => '/home/dw',
+  home => "/home/${dw_user}",
+  shell => '/bin/bash',
 }
 
-file {'/home/dw/dw':
+file {$ljhome:
   ensure => directory,
 }
 
 file_line {'ljhome':
   ensure => present,
-  path => '/home/dw/.profile',
-  line => 'export LJHOME=/home/dw/dw',
+  path => "/home/${dw_user}/.profile",
+  line => "export LJHOME=${ljhome}",
 }
 
 Vcsrepo {
   require => Package['git'],
 }
 
-vcsrepo {'/home/dw/dw':
+vcsrepo {'dw-free':
+  path => $ljhome,
   ensure => present,
   provider => git,
   revision => 'develop',
-  remote => 'nfagerlund',
+  remote => $developer_github,
   source => {
-    nfagerlund => 'https://github.com/nfagerlund/dw-free.git',
+    $developer_github => "https://github.com/${developer_github}/dw-free.git",
     upstream => 'https://github.com/dreamwidth/dw-free.git',
   },
-} ->
+}
 
-vcsrepo {'/home/dw/dw/ext/dw-nonfree':
+vcsrepo {'dw-nonfree':
+  path => "${ljhome}/ext/dw-nonfree",
   ensure => present,
+  require => Vcsrepo['dw-free'],
   provider => git,
   revision => 'develop',
-  remote => 'nfagerlund',
+  remote => $developer_github,
   source => {
-    nfagerlund => 'https://github.com/nfagerlund/dw-nonfree.git',
+    $developer_github => "https://github.com/${developer_github}/dw-nonfree.git",
     upstream => 'https://github.com/dreamwidth/dw-nonfree.git',
   },
 }
 
 mysql::db {'dw':
-  user => 'dw',
-  password => 'snthueoa',
+  user => $dw_db_user,
+  password => $dw_db_user_password,
   host => 'localhost',
   grant => 'ALL',
-} ->
+}
 mysql::db {'dw_schwartz':
-  user => 'dw',
-  password => 'snthueoa',
+  user => $dw_db_user,
+  password => $dw_db_user_password,
   host => 'localhost',
   grant => 'ALL',
 }
