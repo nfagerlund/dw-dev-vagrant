@@ -1,11 +1,12 @@
 
+$dw_domain = 'dw-dev-server'
 $dw_user = 'dw'
 # $dw_user_password = "" # actually, just don't.
 $dw_db_user = $dw_user # meh
 $dw_db_user_password = 'snthueoa'
 $root_db_user_password = 'aoeuhtns'
 
-$ljhome = "/home/$dw_user/dw"
+$ljhome = "/home/${dw_user}/dw"
 $developer_github = 'nfagerlund'
 
 
@@ -206,6 +207,8 @@ file_line {'ljhome':
   ensure => present,
   path => "/home/${dw_user}/.profile",
   line => "export LJHOME=${ljhome}",
+  match => '^export LJHOME',
+  replace_all_matches_not_matching_line => true,
 }
 
 Vcsrepo {
@@ -269,6 +272,18 @@ file {'config-local.pl':
   path => "${ljhome}/ext/local/etc/config-local.pl",
   ensure => file,
   content => epp('dw_dev/config-local.epp', {'developer' => $developer_github}),
+  owner => $dw_user,
+  group => $dw_user,
+}
+
+file {'config-private.pl':
+  path => "${ljhome}/ext/local/etc/config-private.pl",
+  ensure => file,
+  content => epp('dw_dev/config-private.epp', {
+    'dw_domain' => $dw_domain,
+    'dw_db_user' => $dw_db_user,
+    'dw_db_user_password' => $dw_db_user_password,
+  }),
   owner => $dw_user,
   group => $dw_user,
 }

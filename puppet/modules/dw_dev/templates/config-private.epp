@@ -1,3 +1,8 @@
+<%- |
+  String $dw_domain,
+  String $dw_db_user_password,
+  String $dw_db_user,
+| -%>
 #!/usr/bin/perl
 # -*-perl-*-
 
@@ -20,9 +25,9 @@
                'master' => {  # master must be named 'master'
                    'host' => "localhost",
                    'port' => 3306,
-                   'user' => 'dw',    # CHANGETHIS if on Dreamhack to dh_username
-                   'pass' => 'password',    # CHANGETHIS
-                   'dbname' => 'dw',    # CHANGETHIS if on Dreamhack to dreamhack_username
+                   'user' => '<%= $dw_db_user %>',
+                   'pass' => '<%= $dw_db_user_password %>',
+                   'dbname' => 'dw',
                    'role' => {
                        'cluster1' => 1,
                        'slow' => 1,
@@ -49,9 +54,9 @@
     # Schwartz DB configuration
     @THESCHWARTZ_DBS = (
             {
-                dsn => 'dbi:mysql:dw_schwartz;host=localhost', # CHANGETHIS if on Dreamhack to dreamhack_username instead of dw_schwartz
-                user => 'dw', # CHANGETHIS if on Dreamhack to dh_username
-                pass => 'password',     # CHANGETHIS
+                dsn => 'dbi:mysql:dw_schwartz;host=localhost',
+                user => '<%= $dw_db_user %>',
+                pass => '<%= $dw_db_user_password %>',
             },
         );
 
@@ -209,7 +214,7 @@
 {
     package DW::PRIVATE;
 
-    $DOMAIN = "ljsite.com";
+    $DOMAIN = "<%= $dw_domain %>";
 
     #%PAYPAL = (
     #    user => ,
@@ -222,15 +227,15 @@
     #    apikey => '',
     #);
 
-    #%DBINFO = (
-    #    master => {
-    #        pass => ,
-    #    },
-    #);
+    %DBINFO = (
+       master => {
+           pass => '<%= $dw_db_user_password %>',
+       },
+    );
 
-    #%THESCHWARTZ_DBS = (
-    #    pass => ,
-    #);
+    %THESCHWARTZ_DBS = (
+       pass => '<%= $dw_db_user_password %>',
+    );
 
     #%RECAPTCHA = (
     #    public_key  => ,
