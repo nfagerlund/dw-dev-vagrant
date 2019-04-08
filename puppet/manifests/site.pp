@@ -113,6 +113,7 @@ include postfix
 
 class {'apache':
   mpm_module => 'prefork',
+  default_vhost => false,
 
 }
 
@@ -125,6 +126,27 @@ package {'libapache2-request-perl':
 }
 include apache::mod::perl
 
+# ugh I realize this should be an apache::vhost but that type is just too huge
+# to get a handle on so I'm gonna cheat
+file {'dw-vhost':
+  path => '/etc/apache2/sites-available/25-dreamwidth.conf',
+  ensure => file,
+  mode => '0644',
+  content => epp('dw_dev/vhost.epp', {
+    'dw_domain' => $dw_domain,
+    'dw_user' => $dw_user,
+    'ljhome' => $ljhome,
+  }),
+  require => Package['httpd'],
+} ->
+
+file {'dw-vhost-symlink':
+  path => '/etc/apache2/sites-enabled/25-dreamwidth.conf',
+  target => '/etc/apache2/sites-available/25-dreamwidth.conf',
+  ensure => link,
+  mode => '0644',
+  notify => Class['::apache::service'],
+}
 
 class {'cpan':
   manage_config  => true,
@@ -212,8 +234,17 @@ user {$dw_user:
   shell => '/bin/bash',
 }
 
-file {$ljhome:
+# file {$ljhome:
+#   ensure => directory,
+#   owner => $dw_user,
+#   group => $dw_user,
+# }
+
+file {'apache_logs':
   ensure => directory,
+  path => "/home/${dw_user}/apache_logs",
+  owner => $dw_user,
+  group => $dw_user,
 }
 
 file {'gitconfig':

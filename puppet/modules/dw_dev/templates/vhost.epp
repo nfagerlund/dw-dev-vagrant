@@ -1,0 +1,34 @@
+<%- |
+  String $dw_domain,
+  String $dw_user,
+  String $ljhome,
+| -%>
+# install in /etc/apache2/sites-enabled directory
+
+ServerName <%= $dw_domain %>
+
+User <%= $dw_user %>
+Group <%= $dw_user %>
+
+PerlSetEnv  LJHOME <%= $ljhome %>
+PerlPassEnv LJHOME
+
+PerlRequire <%= $ljhome %>/cgi-bin/modperl.pl
+
+StartServers 1
+
+<VirtualHost *:80>
+	ServerAdmin <%= $dw_user %>@<%= $dw_domain %>
+	DocumentRoot <%= $ljhome %>/htdocs
+	UseCanonicalName off
+	ErrorLog /home/<%= $dw_user %>/apache_logs/error.log
+	CustomLog /home/<%= $dw_user %>/apache_logs/access.log combined
+</VirtualHost>
+
+<Directory <%= $ljhome %>/>
+	   Options FollowSymLinks
+	   AllowOverride None
+	   Require all granted
+</Directory>
+
+# vim: syntax=apache ts=4 sw=4 sts=4 sr noet
