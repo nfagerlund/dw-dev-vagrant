@@ -119,6 +119,32 @@ Cpan {
 }
 
 $cpan_packgaes = [
+  # Bundle::CPAN stuff:
+  'ExtUtils::MakeMaker',
+  'Test::Harness',
+  'CPAN::Meta::Requirements',
+  'ExtUtils::CBuilder',
+  'File::Temp',
+  'Test::More',
+  'Data::Dumper',
+  'IO::Compress::Base',
+  'Compress::Zlib',
+  'IO::Zlib',
+  'Archive::Tar',
+  'Module::Build',
+  'File::Spec',
+  'Digest::SHA',
+  'File::HomeDir',
+  'Archive::Zip',
+  'Net::FTP',
+  'Term::ReadKey',
+#  'Term::ReadLine::Perl', # the one really problematic one
+  'YAML',
+  'Parse::CPAN::Meta',
+  'Text::Glob',
+  'CPAN',
+  'File::Which',
+  # Other stuff:
   'GTop',
   'Digest::SHA1',
   'Unicode::CheckUTF8',
