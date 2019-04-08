@@ -145,5 +145,66 @@ class {'mysql::server':
   package_ensure => present,
   service_enabled => true,
   service_manage => true,
-
+  override_options => {
+    mysqld => {
+      sql_mode => "",
+    }
+  }
 }
+
+user {'dw':
+  ensure => present,
+  groups => ['sudo'],
+  managehome => true,
+  home => '/home/dw',
+}
+
+file {'/home/dw/dw':
+  ensure => directory,
+}
+
+file_line {'ljhome':
+  ensure => present,
+  path => '/home/dw/.profile',
+  line => 'export LJHOME=/home/dw/dw',
+}
+
+Vcsrepo {
+  require => Package['git'],
+}
+
+vcsrepo {'/home/dw/dw':
+  ensure => present,
+  provider => git,
+  revision => 'develop',
+  remote => 'nfagerlund',
+  source => {
+    nfagerlund => 'https://github.com/nfagerlund/dw-free.git',
+    upstream => 'https://github.com/dreamwidth/dw-free.git',
+  },
+} ->
+
+vcsrepo {'/home/dw/dw/ext/dw-nonfree':
+  ensure => present,
+  provider => git,
+  revision => 'develop',
+  remote => 'nfagerlund',
+  source => {
+    nfagerlund => 'https://github.com/nfagerlund/dw-nonfree.git',
+    upstream => 'https://github.com/dreamwidth/dw-nonfree.git',
+  },
+}
+
+mysql::db {'dw':
+  user => 'dw',
+  password => 'snthueoa',
+  host => 'localhost',
+  grant => 'ALL',
+} ->
+mysql::db {'dw_schwartz':
+  user => 'dw',
+  password => 'snthueoa',
+  host => 'localhost',
+  grant => 'ALL',
+}
+
