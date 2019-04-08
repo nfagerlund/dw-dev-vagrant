@@ -18,7 +18,8 @@ $base_packages = [
   'libdatetime-perl',
   'libcache-memcached-perl',
   'libhash-multivalue-perl',
-  'libgd-gd2-perl',
+  # 'libgd-gd2-perl', # virtual package, provided by the next one:
+  'libgd-perl',
   'libhtml-template-perl',
   'libwww-perl',
   'libmime-lite-perl',
