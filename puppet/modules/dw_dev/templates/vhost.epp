@@ -5,6 +5,8 @@
 | -%>
 # install in /etc/apache2/sites-enabled directory
 
+Listen 80
+
 ServerName <%= $dw_domain %>
 
 User <%= $dw_user %>
