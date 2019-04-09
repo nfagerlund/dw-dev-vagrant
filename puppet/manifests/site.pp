@@ -314,9 +314,15 @@ vcsrepo {'dw-nonfree':
   },
 }
 
+# A bunch of directories under ljhome/ext/local
+$ext_local_dirs = [
+  "${ljhome}/ext/local",
+  "${ljhome}/ext/local/etc",
+  "${ljhome}/ext/local/htdocs",
+  "${ljhome}/ext/local/htdocs/inc",
+]
 
-file {'ext-local':
-  path => "${ljhome}/ext/local",
+file {$ext_local_dirs:
   ensure => directory,
   require => Vcsrepo['dw-free'],
   owner => $dw_user,
@@ -327,13 +333,6 @@ file {'ext-local-scope':
   path => "${ljhome}/ext/local/.dir_scope",
   ensure => file,
   content => "highest\n",
-  owner => $dw_user,
-  group => $dw_user,
-}
-
-file {'ext-local-etc':
-  path => "${ljhome}/ext/local/etc",
-  ensure => directory,
   owner => $dw_user,
   group => $dw_user,
 }
@@ -357,6 +356,14 @@ file {'config-private.pl':
   owner => $dw_user,
   group => $dw_user,
   mode => '0600',
+}
+
+file {'allowed-email-tlds':
+  path => "${ljhome}/ext/local/htdocs/inc/tlds",
+  ensure => file,
+  content => file('dw_dev/tlds'),
+  owner => $dw_user,
+  group => $dw_user,
 }
 
 mysql::db {'dw':
