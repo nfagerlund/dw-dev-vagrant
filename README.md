@@ -2,6 +2,12 @@
 
 hi.
 
+when iterating more quickly, the command you need for refreshing is `vagrant provision --provision-with puppet`
+
+I've got ag installed so you can search for stuff. ag --help for info.
+
+there's a git config in there to keep me from going bonkers. mess with it as needed.
+
 ## Stuff that might be hosed, won't know until I start another from-scratch build and let it crank for a few hours:
 
 - `apt-get upgrade` does some kind of grub reconfiguration shenanigans in an ncurses interface and it sends your whole terminal session to Extra Hell and scotches the provisioner run.

@@ -91,6 +91,7 @@ $base_packages = [
   'libxmlrpc-lite-perl',
   'default-jre',
   'gearman-server',
+  'silversearcher-ag',
 ]
 
 package {$base_packages:
