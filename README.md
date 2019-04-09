@@ -9,7 +9,7 @@ hi.
 - `Term::ReadLine::Perl` can't be installed noninteractively because if you pipe `yes` to it it just goes into an infinite loop. I let that damn thing run for like half an hour before I noticed.
     - is this thing really necessary??? or can I just leave it commented out? (this was one of the things that rode along with `Bundle::CPAN`.)
 
-## Stuff that ain't automated yet but I'm sorta workin on it
+## Stuff that ain't automated yet or is kinda busted but I'm sorta workin on it
 
 the non-idempotent setup commands, in order that you're supposed to run em:
 
@@ -41,6 +41,17 @@ networking heck:
         - create dir `/etc/resolver` if it doesn't exist.
         - create file `/etc/resolver/test`, contents `nameserver 127.0.0.1`. Now host mac will hit dnsmasq for `.test` domains.
         - I was worried this would be hell because mojave, but no, I just forgot my fuckin sudo! we're golden!!
+
+puppet code is a mess:
+
+- meh.
+- well, theoretically:
+    - get stuff out into classes, but not too many
+        - make so you could split out the mysql stuff maybe
+    - unvendor all those modules and use r10k (like I guess, but also kind of why)
+    - extract all the variables into hiera data for the class params
+    - make the vagrantfile get its hostname out of the hiera yaml too (don't bother being clever or well-groomed, just use one global hierarchy level and slurp the yaml directly)
+        - doesn't seem to be much other config that the vagrantfile needs? maybe if I got dnsmasq automation working.
 
 ## Stuff where I just got no fuckin clue
 
