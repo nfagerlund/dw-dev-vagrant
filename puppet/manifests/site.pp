@@ -1,5 +1,5 @@
 
-$dw_domain = 'dw-dev-server'
+$dw_domain = 'dev-width.test'
 $dw_user = 'dw'
 # $dw_user_password = "" # actually, just don't.
 $dw_db_user = $dw_user # meh
