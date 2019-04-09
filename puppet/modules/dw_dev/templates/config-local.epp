@@ -164,17 +164,17 @@
 
 
     # example betafeature config
-#    %BETA_FEATURES = (
-#        "updatepage" => {
-#            start_time => 0,
-#            end_time => "Inf",
-#        },
+   %BETA_FEATURES = (
+       "updatepage" => {
+           start_time => 0,
+           end_time => "Inf",
+       },
 #        "s2comments" => {
 #            start_time => 0,
 #            end_time => "Inf",
 #            sitewide => 1,
 #        },
-#    );
+   );
 
     # Domains that are known to support HTTPS. This is an optimization to
     # reduce traffic to our proxy and improve the user experience.
