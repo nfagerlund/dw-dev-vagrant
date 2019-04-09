@@ -90,6 +90,7 @@ $base_packages = [
   'libnet-smtps-perl',
   'libxmlrpc-lite-perl',
   'default-jre',
+  'gearman-server',
 ]
 
 package {$base_packages:
@@ -105,6 +106,12 @@ package {'sass':
 package {'compass':
   provider => gem,
   ensure => '0.12.2',
+}
+
+service {'gearman-server':
+  ensure => running,
+  enable => true,
+  require => Package['gearman-server'],
 }
 
 include postfix

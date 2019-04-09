@@ -60,6 +60,9 @@
             },
         );
 
+    # gearman server:
+    @GEARMAN_SERVERS = ('localhost:7003');
+
     # 32 vs 64 bit arch. By default everything goes to a 64 bit arch.
     # Automatically detected. Uncomment to force 32 bit arch support.
     #
