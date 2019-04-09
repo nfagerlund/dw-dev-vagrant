@@ -356,6 +356,7 @@ file {'config-private.pl':
   }),
   owner => $dw_user,
   group => $dw_user,
+  mode => '0600',
 }
 
 mysql::db {'dw':
