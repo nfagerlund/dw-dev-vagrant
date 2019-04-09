@@ -112,6 +112,7 @@ service {'gearman-server':
   ensure => running,
   enable => true,
   require => Package['gearman-server'],
+  hasrestart => true,
 }
 
 include postfix
