@@ -1,6 +1,7 @@
 
 $dw_domain = 'dev-width.test'
 $dw_user = 'dw'
+$local_email_domain = 'dw-user-emails.test'
 # $dw_user_password = "" # actually, just don't.
 $dw_db_user = $dw_user # meh
 $dw_db_user_password = 'snthueoa'
@@ -13,6 +14,11 @@ $developer_email = 'nick.fagerlund@gmail.com'
 
 
 notify {"sup":}
+
+# DW can't send emails to its own official hostname, so make an alias.
+host {$local_email_domain:
+  ip => '127.0.0.1',
+}
 
 $base_packages = [
   'git',
@@ -116,7 +122,9 @@ service {'gearman-server':
   hasrestart => true,
 }
 
-include postfix
+class {'postfix':
+  mydestination => "${dw_domain}, ${local_email_domain}, localhost, localhost.localdomain",
+}
 
 # postfix::config { "relay_domains": value  => "localhost host.foo.com" }
 
