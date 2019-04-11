@@ -213,4 +213,18 @@ class dw_dev::prerequisites (
 
   cpan {$cpan_modules:}
 
+  # Don't waste cycles running the puppet agent and mco services
+  service { 'mcollective.service':
+    ensure => stopped,
+    enable => false,
+  }
+  service { 'puppet.service':
+    ensure => stopped,
+    enable => false,
+  }
+  service { 'pxp-agent.service':
+    ensure => stopped,
+    enable => false,
+  }
+
 }
