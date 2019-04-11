@@ -142,6 +142,15 @@ class dw_dev::app (
     grant => 'ALL',
   }
 
+  ## The worker manager service:
+
+  service {'dw-worker-manager':
+    provider => base,
+    ensure => running,
+    start => "runuser -l dw -c 'LJHOME=${ljhome} ${ljhome}/bin/worker-manager'",
+    pattern => "worker-manager", # allows stop/status/restart
+  }
+
   ## Come up w/ a name for this stuff later:
   if false { # DEFINITELY need to test this on a fresh install before enabling
     exec {
