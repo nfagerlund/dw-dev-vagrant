@@ -22,6 +22,14 @@ class {'dw_dev::prerequisites':
   root_db_user_password => $root_db_user_password,
 }
 
+# the OS user that the app relies on
+class {'dw_dev::user':
+  dw_user => $dw_user,
+  developer_name => $developer_name,
+  developer_email => $developer_email,
+  ljhome => $ljhome,
+}
+
 # ugh I realize this should be an apache::vhost but that type is just too huge
 # to get a handle on so I'm gonna cheat
 file {'dw-vhost':
@@ -44,23 +52,6 @@ file {'dw-vhost-symlink':
   notify => Class['apache::service'],
 }
 
-user {$dw_user:
-  ensure => present,
-  groups => ['sudo'],
-  managehome => true,
-  home => "/home/${dw_user}",
-  shell => '/bin/bash',
-}
-
-# Let me sudo freely so I can restart apache without a second tab open!
-file {'/etc/sudoers.d/11_dw':
-  ensure => file,
-  content => "%dw ALL=(ALL) NOPASSWD: ALL\n",
-  mode => '0440',
-  owner => 'root',
-  group => 'root',
-}
-
 # file {$ljhome:
 #   ensure => directory,
 #   owner => $dw_user,
@@ -72,31 +63,6 @@ file {'apache_logs':
   path => "/home/${dw_user}/apache_logs",
   owner => $dw_user,
   group => $dw_user,
-}
-
-file {'gitconfig':
-  ensure => file,
-  path => "/home/${dw_user}/.gitconfig",
-  content => epp('dw_dev/gitconfig.epp', {
-    'developer_name' => $developer_name,
-    'developer_email' => $developer_email,
-  }),
-  owner => $dw_user,
-  group => $dw_user,
-}
-
-file_line {'g':
-  ensure => present,
-  path => "/home/${dw_user}/.profile",
-  line => "alias g='git'",
-}
-
-file_line {'ljhome':
-  ensure => present,
-  path => "/home/${dw_user}/.profile",
-  line => "export LJHOME=${ljhome}",
-  match => '^export LJHOME',
-  replace_all_matches_not_matching_line => true,
 }
 
 Vcsrepo {
