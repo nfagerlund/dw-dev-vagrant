@@ -308,7 +308,7 @@ vcsrepo {'dw-free':
   owner => $dw_user,
   group => $dw_user,
   provider => git,
-  revision => 'develop',
+  branch => 'develop',
   remote => $developer_github,
   source => {
     $developer_github => "https://github.com/${developer_github}/dw-free.git",
@@ -323,7 +323,7 @@ vcsrepo {'dw-nonfree':
   group => $dw_user,
   require => Vcsrepo['dw-free'],
   provider => git,
-  revision => 'develop',
+  branch => 'develop',
   remote => $developer_github,
   source => {
     $developer_github => "https://github.com/${developer_github}/dw-nonfree.git",
