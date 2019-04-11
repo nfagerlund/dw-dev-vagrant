@@ -44,6 +44,16 @@ class {'dw_dev::app':
   dw_app_system_user_password => $dw_app_system_user_password,
 }
 
+## The worker manager service:
+
+service {'dw-worker-manager':
+  provider => base,
+  ensure => running,
+  start => "runuser -l dw -c 'LJHOME=${ljhome} ${ljhome}/bin/worker-manager'",
+  pattern => "worker-manager", # allows stop/status/restart
+}
+
+
 
 file {'allowed-email-tlds':
   path => "${ljhome}/ext/local/htdocs/inc/tlds",
@@ -52,5 +62,4 @@ file {'allowed-email-tlds':
   owner => $dw_user,
   group => $dw_user,
 }
-
 

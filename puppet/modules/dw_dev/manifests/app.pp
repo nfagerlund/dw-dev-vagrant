@@ -17,6 +17,14 @@ class dw_dev::app (
   # relationships with Class['apache'] -- the title of Package['httpd'] is
   # normalized, so you can just require that instead.
 
+  file {'apache_logs':
+    ensure => directory,
+    path => "/home/${dw_user}/apache_logs",
+    owner => $dw_user,
+    group => $dw_user,
+    before => File['dw-vhost'],
+  }
+
   # ugh I realize this should be an apache::vhost but that type is just too
   # huge to get a handle on so I'm gonna cheat
   file {'dw-vhost':
@@ -39,14 +47,6 @@ class dw_dev::app (
     mode => '0644',
     require => Package['httpd'],
     notify => Class['apache::service'],
-  }
-
-  file {'apache_logs':
-    ensure => directory,
-    path => "/home/${dw_user}/apache_logs",
-    owner => $dw_user,
-    group => $dw_user,
-    before => File['dw-vhost'],
   }
 
   ## Application code:
@@ -140,15 +140,6 @@ class dw_dev::app (
     password => $dw_db_user_password,
     host => 'localhost',
     grant => 'ALL',
-  }
-
-  ## The worker manager service:
-
-  service {'dw-worker-manager':
-    provider => base,
-    ensure => running,
-    start => "runuser -l dw -c 'LJHOME=${ljhome} ${ljhome}/bin/worker-manager'",
-    pattern => "worker-manager", # allows stop/status/restart
   }
 
   ## Come up w/ a name for this stuff later:
