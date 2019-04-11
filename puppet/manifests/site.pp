@@ -5,6 +5,7 @@ $local_email_domain = 'dw-user-emails.test'
 $dw_db_user = $dw_user # meh
 $dw_db_user_password = 'snthueoa'
 $root_db_user_password = 'aoeuhtns'
+$dw_app_system_user_password = 'uhetonas9'
 
 $ljhome = "/home/${dw_user}/dw"
 $developer_github = 'nfagerlund'
@@ -40,6 +41,7 @@ class {'dw_dev::app':
   developer_github => $developer_github,
   dw_db_user => $dw_db_user,
   dw_db_user_password => $dw_db_user_password,
+  dw_app_system_user_password => $dw_app_system_user_password,
 }
 
 

@@ -5,6 +5,7 @@ class dw_dev::app (
   String $developer_github,
   String $dw_db_user = 'dw',
   String $dw_db_user_password,
+  String $dw_app_system_user_password,
 ){
 
   ## Apache configs:
@@ -141,4 +142,72 @@ class dw_dev::app (
     grant => 'ALL',
   }
 
+  ## Come up w/ a name for this stuff later:
+  if false { # DEFINITELY need to test this on a fresh install before enabling
+    exec {
+      default:
+        environment => ["LJHOME=${ljhome}"],
+        cwd => $ljhome,
+        user => $dw_user,
+        logoutput => true,
+      ;
+      'checkconfig.pl':
+        command => "${ljhome}/bin/checkconfig.pl",
+        refreshonly => true,
+        # (also gets notified by anything notifying this class.)
+        subscribe => [
+          File['config-local.pl'],
+          File['config-private.pl'],
+          Mysql::Db['dw'],
+        ],
+      ;
+      'update-db once':
+        command => "${ljhome}/bin/upgrading/update-db.pl -r --innodb",
+        refreshonly => true,
+        subscribe => [
+          File['config-local.pl'],
+          File['config-private.pl'],
+          Mysql::Db['dw'],
+        ],
+      ;
+      'update-db twice':
+        command => "${ljhome}/bin/upgrading/update-db.pl -r --innodb",
+        refreshonly => true,
+        subscribe => [
+          Exec['update-db once'],
+        ],
+      ;
+      'im-in-love-with-rock-n-roll':
+        command => "${ljhome}/bin/upgrading/update-db.pl -r --innodb",
+        refreshonly => true,
+        subscribe => [
+          Exec['update-db twice'],
+        ],
+      ;
+      'populate-app-db':
+        command => "#{ljhome}/bin/upgrading/update-db.pl -p",
+        onlyif => '/bin/false', # needs more testing.
+      ;
+      'populate-schwartz-db':
+        command => "/usr/bin/mysql -u ${dw_db_user} -p${dw_db_user_password} dw_schwartz < /usr/share/doc/libtheschwartz-perl/schema.sql",
+        onlyif => '/bin/false', # needs more testing
+      ;
+      'make_system.pl': # creates system user in dw app
+        provider => shell,
+        command => "echo '${dw_app_system_user_password}' | ${ljhome}/bin/upgrading/make_system.pl",
+        onlyif => '/bin/false', # needs more testing
+      ;
+      'texttool.pl':
+        command => "${ljhome}/bin/upgrading/texttool.pl load",
+        refreshonly => true,
+        subscribe => [
+          Vcsrepo['dw-free'],
+        ],
+      ;
+      'build-static.sh':
+        command => "${ljhome}/bin/build-static.sh",
+        # just always run it.
+      ;
+    }
+  }
 }
