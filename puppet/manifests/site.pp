@@ -251,6 +251,15 @@ user {$dw_user:
   shell => '/bin/bash',
 }
 
+# Let me sudo freely so I can restart apache without a second tab open!
+file {'/etc/sudoers.d/11_dw':
+  ensure => file,
+  content => "%dw ALL=(ALL) NOPASSWD: ALL\n",
+  mode => '0440',
+  owner => 'root',
+  group => 'root',
+}
+
 # file {$ljhome:
 #   ensure => directory,
 #   owner => $dw_user,
