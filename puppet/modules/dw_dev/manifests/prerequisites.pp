@@ -119,6 +119,7 @@ class dw_dev::prerequisites (
     # make sure that local email alias works.
     mydestination => "${dw_domain}, ${local_email_domain}, localhost, localhost.localdomain",
   }
+  contain 'postfix'
 
   # postfix::config { "relay_domains": value  => "localhost host.foo.com" }
 
@@ -126,6 +127,7 @@ class dw_dev::prerequisites (
     mpm_module => 'prefork',
     default_vhost => false,
   }
+  contain 'apache'
 
   apache::mod {'apreq2':
     # special snowflake, needs non-matching name in configs.
@@ -135,7 +137,7 @@ class dw_dev::prerequisites (
     provider => apt,
     ensure => present,
   }
-  include apache::mod::perl
+  contain apache::mod::perl
 
   class {'mysql::server':
     root_password => $root_db_user_password,
@@ -148,6 +150,7 @@ class dw_dev::prerequisites (
       }
     }
   }
+  contain 'mysql::server'
 
 
   class {'cpan':
@@ -160,6 +163,7 @@ class dw_dev::prerequisites (
       'trust_test_report_history' => '1',
     },
   }
+  contain 'cpan'
 
   Cpan {
     ensure => present,

@@ -41,7 +41,7 @@ file {'dw-vhost-symlink':
   target => '/etc/apache2/sites-available/25-dreamwidth.conf',
   ensure => link,
   mode => '0644',
-  notify => Class['::apache::service'],
+  notify => Class['apache::service'],
 }
 
 user {$dw_user:
