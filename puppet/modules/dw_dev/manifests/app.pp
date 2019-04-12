@@ -3,6 +3,7 @@ class dw_dev::app (
   String $dw_user = 'dw',
   String $ljhome = '/home/dw/dw',
   String $developer_github,
+  Optional[String] $dw_free_revision = undef, # An optional commit to reset the dw_free repo to, if you'd rather not edit code or handle Git stuff in situ.
   String $dw_db_user = 'dw',
   String $dw_db_user_password,
   String $dw_app_system_user_password,
@@ -58,6 +59,7 @@ class dw_dev::app (
     group => $dw_user,
     provider => git,
     branch => 'develop',
+    revision => $dw_free_revision,
     remote => $developer_github,
     source => {
       # abjure 'origin' for it is unclean. I have spoken. :|
