@@ -50,6 +50,7 @@ class dw_dev (
     ensure => running,
     start => "runuser -l dw -c 'LJHOME=${ljhome} ${ljhome}/bin/worker-manager'",
     pattern => "worker-manager", # allows stop/status/restart
+    require => Class['dw_dev::app'],
   }
 
 
