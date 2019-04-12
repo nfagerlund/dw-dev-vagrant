@@ -11,7 +11,7 @@ class dw_dev::app (
 
   ## Apache configs:
 
-  # TBH *any* change in this class means Apache needs a restart.
+  # Probably *any* change in this class means Apache needs a restart.
   Class[$name] ~> Class['apache::service']
   # Now, I *think* the service class is free-floating and not contained in the
   # base apache class. But just in case, maybe avoid forming any 'require'
@@ -38,7 +38,6 @@ class dw_dev::app (
       'ljhome' => $ljhome,
     }),
     require => Package['httpd'],
-    notify => Class['apache::service'],
   }
 
   file {'dw-vhost-symlink':
@@ -47,7 +46,6 @@ class dw_dev::app (
     ensure => link,
     mode => '0644',
     require => Package['httpd'],
-    notify => Class['apache::service'],
   }
 
   ## Application code:
