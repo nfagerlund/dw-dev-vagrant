@@ -142,7 +142,8 @@ class dw_dev::app (
     grant => 'ALL',
   }
 
-  ## Come up w/ a name for this stuff later:
+  ## Wacky-pants execs
+  # Never notify this whole class, btw.
   if false { # DEFINITELY need to test this on a fresh install before enabling
     exec {
       default:
@@ -154,13 +155,16 @@ class dw_dev::app (
       'checkconfig.pl':
         command => "${ljhome}/bin/checkconfig.pl",
         refreshonly => true,
-        # (also gets notified by anything notifying this class.)
         subscribe => [
           File['config-local.pl'],
           File['config-private.pl'],
           Mysql::Db['dw'],
         ],
+        before => Exec['update-db once'],
       ;
+      # These DB updates are all idempotent in the important sense (i.e. they
+      # won't screw anything up), but they're also a waste of time if nothing
+      # changed.
       'update-db once':
         command => "${ljhome}/bin/upgrading/update-db.pl -r --innodb",
         refreshonly => true,
@@ -168,46 +172,64 @@ class dw_dev::app (
           File['config-local.pl'],
           File['config-private.pl'],
           Mysql::Db['dw'],
+          Vcsrepo['dw-free'],
         ],
       ;
       'update-db twice':
         command => "${ljhome}/bin/upgrading/update-db.pl -r --innodb",
         refreshonly => true,
-        subscribe => [
-          Exec['update-db once'],
-        ],
+        subscribe => Exec['update-db once'],
       ;
       'im-in-love-with-rock-n-roll':
-        command => "${ljhome}/bin/upgrading/update-db.pl -r --innodb",
+        command => "${ljhome}/bin/upgrading/update-db.pl -r --cluster=all --innodb",
         refreshonly => true,
-        subscribe => [
-          Exec['update-db twice'],
-        ],
+        subscribe => Exec['update-db twice'],
       ;
       'populate-app-db':
-        command => "#{ljhome}/bin/upgrading/update-db.pl -p",
-        onlyif => '/bin/false', # needs more testing.
+        command => "${ljhome}/bin/upgrading/update-db.pl -p",
+        refreshonly => true,
+        subscribe => Exec['im-in-love-with-rock-n-roll'],
       ;
+      # THIS one, on the other hand, isn't very idempotent. But it also only
+      # ever needs to run once, so my current plan is to write a file and just
+      # check that.
       'populate-schwartz-db':
         command => "/usr/bin/mysql -u ${dw_db_user} -p${dw_db_user_password} dw_schwartz < /usr/share/doc/libtheschwartz-perl/schema.sql",
-        onlyif => '/bin/false', # needs more testing
+        creates => "/home/${dw_user}/.schwartz",
+        before => File['schwartz-db-safety'],
       ;
+      # Same here:
       'make_system.pl': # creates system user in dw app
         provider => shell,
         command => "echo '${dw_app_system_user_password}' | ${ljhome}/bin/upgrading/make_system.pl",
-        onlyif => '/bin/false', # needs more testing
+        creates => "/home/${dw_user}/.system-user",
+        before => File['system-user-safety'],
       ;
       'texttool.pl':
         command => "${ljhome}/bin/upgrading/texttool.pl load",
         refreshonly => true,
-        subscribe => [
-          Vcsrepo['dw-free'],
-        ],
+        subscribe => Vcsrepo['dw-free'], # only needs to run on code updates.
+        # if you're handling code updates yourself, you're in charge of this.
       ;
       'build-static.sh':
         command => "${ljhome}/bin/build-static.sh",
         # just always run it.
       ;
     }
+  }
+
+  file {'schwartz-db-safety':
+    path => "/home/${dw_user}/.schwartz",
+    ensure => file,
+    owner => $dw_user,
+    mode => '0644',
+    content => "database dw_schwartz was already populated.\n",
+  }
+  file {'system-user-safety':
+    path => "/home/${dw_user}/.system-user",
+    ensure => file,
+    owner => $dw_user,
+    mode => '0644',
+    content => "system user was already created.\n",
   }
 }
