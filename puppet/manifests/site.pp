@@ -1,7 +1,7 @@
 
 $dw_domain = 'dev-width.test'
 $dw_user = 'dw'
-$local_email_domain = 'dw-user-emails.test'
+$local_email_domain = 'dev-width.post'
 $dw_db_user = $dw_user # meh
 $dw_db_user_password = 'snthueoa'
 $root_db_user_password = 'aoeuhtns'
