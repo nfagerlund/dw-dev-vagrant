@@ -1,0 +1,13 @@
+---
+dw_dev::dw_domain: 'dev-width.test'
+dw_dev::local_email_domain: 'dev-width.post'
+dw_dev::dw_user: 'dw'
+dw_dev::dw_db_user: 'dw'
+dw_dev::dw_db_user_password: 'snthueoa'
+dw_dev::root_db_user_password: 'aoeuhtns'
+dw_dev::dw_app_system_user_password: 'uhetonas9'
+dw_dev::ljhome: "/home/dw/dw"
+dw_dev::developer_github: 'nfagerlund'
+dw_dev::developer_name: 'Nick Fagerlund'
+dw_dev::developer_email: 'nick.fagerlund@gmail.com'
+# dw_dev::dw_free_revision: 'upstream/develop'
