@@ -11,7 +11,7 @@ $ljhome = "/home/${dw_user}/dw"
 $developer_github = 'nfagerlund'
 $developer_name = 'Nick Fagerlund'
 $developer_email = 'nick.fagerlund@gmail.com'
-
+$dw_free_revision = undef,
 
 notify {"sup":}
 
@@ -42,6 +42,7 @@ class {'dw_dev::app':
   dw_db_user => $dw_db_user,
   dw_db_user_password => $dw_db_user_password,
   dw_app_system_user_password => $dw_app_system_user_password,
+  dw_free_revision => $dw_free_revision,
 }
 
 ## The worker manager service:
