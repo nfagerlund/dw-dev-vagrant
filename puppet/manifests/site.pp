@@ -54,13 +54,3 @@ service {'dw-worker-manager':
   pattern => "worker-manager", # allows stop/status/restart
 }
 
-
-
-file {'allowed-email-tlds':
-  path => "${ljhome}/ext/local/htdocs/inc/tlds",
-  ensure => file,
-  content => file('dw_dev/tlds'),
-  owner => $dw_user,
-  group => $dw_user,
-}
-
