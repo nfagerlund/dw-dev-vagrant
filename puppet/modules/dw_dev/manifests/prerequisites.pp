@@ -91,6 +91,7 @@ class dw_dev::prerequisites (
     'default-jre',
     'gearman-server',
     'silversearcher-ag',
+    'mutt',
   ]
 
   package {$base_packages:
@@ -115,13 +116,11 @@ class dw_dev::prerequisites (
     hasrestart => true,
   }
 
-  class {'postfix':
-    # make sure that local email alias works.
-    mydestination => "${dw_domain}, ${local_email_domain}, localhost, localhost.localdomain",
-  }
   contain 'postfix'
 
-  # postfix::config { "relay_domains": value  => "localhost host.foo.com" }
+  postfix::config {"mydestination":
+    value  => "${dw_domain}, ${local_email_domain}, localhost, localhost.localdomain",
+  }
 
   class {'apache':
     mpm_module => 'prefork',
