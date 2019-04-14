@@ -68,7 +68,7 @@ class dw_dev::prerequisites (
     'libtemplate-perl',
     'libterm-readkey-perl',
     'libmime-base64-urlsafe-perl',
-    'gcc',
+#     'gcc', # class cpanm installs this, need to uncomment to avoid conflict
     'libtest-most-perl',
     'libgearman-client-perl',
     'libfile-find-rule-perl',
@@ -153,23 +153,23 @@ class dw_dev::prerequisites (
   contain 'mysql::server'
 
 
-  class {'cpan':
-    manage_config  => true,
-    manage_package => false,
-  #   installdirs    => 'site',
-  #   local_lib      => false,
-    config_hash    => {
-      'build_requires_install_policy' => 'no', # WHO KNOWS, but it's the default.
-      'trust_test_report_history' => '1',
-    },
-  }
-  contain 'cpan'
-
-  Cpan {
-    ensure => present,
-    force => false,
-    require => Class['cpan'],
-  }
+#   class {'cpan':
+#     manage_config  => true,
+#     manage_package => false,
+#   #   installdirs    => 'site',
+#   #   local_lib      => false,
+#     config_hash    => {
+#       'build_requires_install_policy' => 'no', # WHO KNOWS, but it's the default.
+#       'trust_test_report_history' => '1',
+#     },
+#   }
+#   contain 'cpan'
+#
+#   Cpan {
+#     ensure => present,
+#     force => false,
+#     require => Class['cpan'],
+#   }
 
   $cpan_modules = [
     # Bundle::CPAN stuff, unbundled:
@@ -211,7 +211,14 @@ class dw_dev::prerequisites (
     'Text::Fuzzy',
   ]
 
-  cpan {$cpan_modules:}
+#   cpan {$cpan_modules:}
+
+  include cpanm
+  cpanm {$cpan_modules:
+    ensure => present,
+    test => false,
+    require => Class['cpanm'],
+  }
 
   # Don't waste cycles running the puppet agent and mco services
   service { 'mcollective.service':
