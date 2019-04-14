@@ -10,5 +10,6 @@ dw_dev::ljhome: "/home/dw/dw"
 dw_dev::developer_github: 'nfagerlund'
 dw_dev::developer_name: 'Nick Fagerlund'
 dw_dev::developer_email: 'nick.fagerlund@gmail.com'
-# dw_dev::dw_free_revision: 'upstream/develop'
+# dw_dev::dw_free_commit: 'upstream/develop'
+
 dw_dev::manage_local_configs: true

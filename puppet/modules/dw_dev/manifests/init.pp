@@ -10,7 +10,7 @@ class dw_dev (
   String $developer_github,
   String $developer_name = 'Onion Knight',
   String $developer_email = 'unconfigured@example.com',
-  Optional[String] $dw_free_revision = undef,
+  Optional[String] $dw_free_commit = undef,
   Boolean $manage_local_configs = true,
 ) {
 
@@ -41,7 +41,7 @@ class dw_dev (
     dw_db_user => $dw_db_user,
     dw_db_user_password => $dw_db_user_password,
     dw_app_system_user_password => $dw_app_system_user_password,
-    dw_free_revision => $dw_free_revision,
+    dw_free_commit => $dw_free_commit,
     manage_local_configs => $manage_local_configs,
   }
 
