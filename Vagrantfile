@@ -1,6 +1,15 @@
 # -*- mode: ruby -*-
 # vi: set ft=ruby :
 
+require 'yaml'
+begin
+  settings = YAML.load(File.read(File.expand_path('./config.yaml')))
+  hostname = settings['dw_dev::dw_domain']
+  raise unless (hostname.class == String) && (hostname.length > 0)
+rescue
+  raise "Couldn't get a hostname for the VM! Make sure you have a valid config.yaml file."
+end
+
 # All Vagrant configuration is done below. The "2" in Vagrant.configure
 # configures the configuration version (we support older styles for
 # backwards compatibility). Please don't change it unless you know what
@@ -28,7 +37,7 @@ Vagrant.configure("2") do |config|
   # Bridged networks make the machine appear as another physical device on
   # your network.
   config.vm.network "public_network"
-  config.vm.hostname = "dev-width.test"
+  config.vm.hostname = hostname
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
