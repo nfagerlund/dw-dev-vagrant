@@ -58,7 +58,7 @@ class dw_dev::app (
     provider => git,
     branch => 'develop',
     revision => $dw_free_revision,
-    remote => $developer_github,
+    remote => $developer_github, # We assume you're here to hack -free.
     source => {
       # abjure 'origin' for it is unclean. I have spoken. :|
       $developer_github => "https://github.com/${developer_github}/dw-free.git",
@@ -74,7 +74,7 @@ class dw_dev::app (
     require => Vcsrepo['dw-free'],
     provider => git,
     branch => 'develop',
-    remote => $developer_github,
+    remote => upstream, # We don't assume you care about -nonfree tho.
     source => {
       $developer_github => "https://github.com/${developer_github}/dw-nonfree.git",
       upstream => 'https://github.com/dreamwidth/dw-nonfree.git',
