@@ -45,6 +45,12 @@ class dw_dev (
     keep_local_config_edits => $keep_local_config_edits,
   }
 
+  contain([
+    Class['dw_dev::prerequisites'],
+    Class['dw_dev::user'],
+    Class['dw_dev::app'],
+  ])
+
   ## The worker manager service:
 
   service {'dw-worker-manager':
