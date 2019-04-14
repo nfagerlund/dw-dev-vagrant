@@ -11,6 +11,7 @@ class dw_dev (
   String $developer_name = 'Onion Knight',
   String $developer_email = 'unconfigured@example.com',
   Optional[String] $dw_free_revision = undef,
+  Boolean $manage_local_configs = true,
 ) {
 
   # Hosts, packages, required system services
@@ -41,6 +42,7 @@ class dw_dev (
     dw_db_user_password => $dw_db_user_password,
     dw_app_system_user_password => $dw_app_system_user_password,
     dw_free_revision => $dw_free_revision,
+    manage_local_configs => $manage_local_configs,
   }
 
   ## The worker manager service:
