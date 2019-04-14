@@ -1,15 +1,49 @@
 ---
-dw_dev::dw_domain: 'dev-width.test'
-dw_dev::local_email_domain: 'dev-width.post'
-dw_dev::dw_user: 'dw'
-dw_dev::dw_db_user: 'dw'
-dw_dev::dw_db_user_password: 'snthueoa'
-dw_dev::root_db_user_password: 'aoeuhtns'
-dw_dev::dw_app_system_user_password: 'uhetonas9'
-dw_dev::ljhome: "/home/dw/dw"
-dw_dev::developer_github: 'nfagerlund'
-dw_dev::developer_name: 'Nick Fagerlund'
-dw_dev::developer_email: 'nick.fagerlund@gmail.com'
+# Copy this to config.yaml (and edit as needed) before starting the VM!
+
+## SETTINGS TO CHANGE:
+
+# Passwords:
+# - The first one is what you'll use to log in to Dreamwidth as "system"!
+# - Just keyb-smash for the database users, you won't need to use them directly.
+# - The dw OS user can't log in with a password. Log in as vagrant and switch
+#   user with `sudo -iu dw`.
+dw_dev::dw_app_system_user_password: "uhetonas9"
+dw_dev::dw_db_user_password: "snthueoa"
+dw_dev::root_db_user_password: "aoeuhtns"
+
+# Your GitHub username! Make sure you've already forked dreamwidth/dw-free.
+dw_dev::developer_github: "nfagerlund"
+# Info used if you commit any changes from the dev server.
+dw_dev::developer_name: "Nick Fagerlund"
+dw_dev::developer_email: "nick.fagerlund@gmail.com"
+
+# Optional git treeish to update dw-free to:
 # dw_dev::dw_free_commit: 'upstream/develop'
 
+# ^^ With this off, we initially check out <YR GITHUB>/develop and then leave it
+# alone, assuming that you're handling it from there. If you set this, every
+# time the VM starts it'll fetch refs from your fork and then forcibly check out
+# the specified treeish (which should probably be a <YR GITHUB>/<BRANCH>
+# reference).
+
+# Set this to true if you want to edit config-local.pl and config-private.pl
+# directly on the VM and have your changes persist across reboots. Leave it
+# false to let the templates overwrite any local changes.
 dw_dev::keep_local_config_edits: false
+
+## SETTINGS TO PROBABLY LET BE
+
+# Hostname that Dreamwidth thinks it lives at. You're responsible for making
+# sure your real computers can actually reach the dev server at this domain and
+# all of its possible subdomains; see README if you're lost.
+dw_dev::dw_domain: "dev-width.test"
+# An extra domain for local emails on the dev box. Emails to dw@<this> can be
+# read by logging in as dw and running mutt.
+dw_dev::local_email_domain: "dev-width.post"
+# The OS user that owns the Dreamwidth app.
+dw_dev::dw_user: "dw"
+# The database user for the DW and Schwartz MySql databases
+dw_dev::dw_db_user: "dw"
+# The directory where all the DW application code lives
+dw_dev::ljhome: "/home/dw/dw"
