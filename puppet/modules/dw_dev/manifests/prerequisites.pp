@@ -151,25 +151,6 @@ class dw_dev::prerequisites (
   }
   contain 'mysql::server'
 
-
-#   class {'cpan':
-#     manage_config  => true,
-#     manage_package => false,
-#   #   installdirs    => 'site',
-#   #   local_lib      => false,
-#     config_hash    => {
-#       'build_requires_install_policy' => 'no', # WHO KNOWS, but it's the default.
-#       'trust_test_report_history' => '1',
-#     },
-#   }
-#   contain 'cpan'
-#
-#   Cpan {
-#     ensure => present,
-#     force => false,
-#     require => Class['cpan'],
-#   }
-
   $cpan_modules = [
     # Bundle::CPAN stuff, unbundled:
     'ExtUtils::MakeMaker',
@@ -209,8 +190,6 @@ class dw_dev::prerequisites (
     'Net::DNS',
     'Text::Fuzzy',
   ]
-
-#   cpan {$cpan_modules:}
 
   include cpanm
   cpanm {$cpan_modules:
