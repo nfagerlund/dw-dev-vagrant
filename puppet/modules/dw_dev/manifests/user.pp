@@ -4,7 +4,7 @@ class dw_dev::user (
   String $dw_user = 'dw',
   String $developer_name = 'Onion Knight',
   String $developer_email = 'unconfigured@example.com',
-  String $ljhome = "/home/dw/dw", # should use params class but whatever
+  String $ljhome = "/home/dw/dw",
 ){
 
   user {$dw_user:

@@ -84,12 +84,10 @@ class dw_dev::app (
 
   ## App config overrides:
 
-  # A bunch of directories under ljhome/ext/local
+  # ljhome/ext/local and its subdirs:
   $ext_local_dirs = [
     "${ljhome}/ext/local",
     "${ljhome}/ext/local/etc",
-    "${ljhome}/ext/local/htdocs",
-    "${ljhome}/ext/local/htdocs/inc",
   ]
   file {$ext_local_dirs:
     ensure => directory,
@@ -106,8 +104,9 @@ class dw_dev::app (
   }
 
   # The actual config files. I recommend editing the templates when you need to
-  # change settings, so they'll survive across restarts and the occasional total
-  # dev environment wipe.
+  # change settings, so they'll survive across both restarts and the occasional
+  # total dev environment wipe. But if you'd rather not, you can set the
+  # $keep_local_config_edits class param.
   file {'config-local.pl':
     path => "${ljhome}/ext/local/etc/config-local.pl",
     ensure => file,
