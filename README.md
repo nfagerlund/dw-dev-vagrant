@@ -6,7 +6,7 @@ hi. This brings up a disposable Dreamwidth dev instance, with all required servi
 - Clone this repo.
 - Copy `config-example.yaml` to `config.yaml` and edit as needed.
 - `vagrant up`
-- [Commit whatever DNS Crimes you gotta](#dns) to make sure your normal computer can reach the VM at `dev-width.test` and all subdomains thereof.
+- [Commit whatever DNS Crimes you gotta](#dns) to make sure your normal computer can reach the VM at `dev-width.test` and all subdomains thereof. (It'll print a message with its IP addresses after it's all the way up; use the bridged one on your local network, not the NAT-ted one.)
 - Browse to `http://dev-width.test` and log in as "system" (using the password in config.yaml).
 - Log into the VM with `vagrant ssh` and switch to the DW user with `sudo -iu dw`. Nothing should require a password, and dw can sudo to restart apache or whatever (`sudo apache2ctl graceful`).
 - Have fun!
@@ -73,8 +73,6 @@ When you're done, remember to set your phone's proxy settings back to "off" and 
 
 ## Stuff that might be hosed, won't know until I start another from-scratch build and let it crank for a few hours:
 
-- `apt-get upgrade` does some kind of grub reconfiguration shenanigans in an ncurses interface and it sends your whole terminal session to Extra Hell and scotches the provisioner run.
-    - I THINK I might have fixed that with `DEBIAN_FRONTEND=noninteractive` but idk yet.
 - `Term::ReadLine::Perl` can't be installed noninteractively because if you pipe `yes` to it it just goes into an infinite loop. I let that damn thing run for like half an hour before I noticed.
     - is this thing really necessary??? or can I just leave it commented out? (this was one of the things that rode along with `Bundle::CPAN`.)
 - the DB/asset-compile setup scripts should work now, but I've never tested em.
