@@ -12,4 +12,4 @@ dw_dev::developer_name: 'Nick Fagerlund'
 dw_dev::developer_email: 'nick.fagerlund@gmail.com'
 # dw_dev::dw_free_commit: 'upstream/develop'
 
-dw_dev::manage_local_configs: true
+dw_dev::keep_local_config_edits: false

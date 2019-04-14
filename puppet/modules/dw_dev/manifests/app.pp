@@ -7,7 +7,7 @@ class dw_dev::app (
   String $dw_db_user = 'dw',
   String $dw_db_user_password,
   String $dw_app_system_user_password,
-  Boolean $manage_local_configs = true,
+  Boolean $keep_local_config_edits = false,
 ){
 
   ## Apache configs:
@@ -114,7 +114,7 @@ class dw_dev::app (
     content => epp('dw_dev/config-local.epp', {'developer' => $developer_github}),
     owner => $dw_user,
     group => $dw_user,
-    replace => $manage_local_configs,
+    replace => !$keep_local_config_edits,
   }
   file {'config-private.pl':
     path => "${ljhome}/ext/local/etc/config-private.pl",
@@ -127,7 +127,7 @@ class dw_dev::app (
     owner => $dw_user,
     group => $dw_user,
     mode => '0600',
-    replace => $manage_local_configs,
+    replace => !$keep_local_config_edits,
   }
 
 
