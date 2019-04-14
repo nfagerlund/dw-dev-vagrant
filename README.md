@@ -10,7 +10,7 @@ hi. This brings up a disposable Dreamwidth dev instance, with all required servi
 - Browse to `http://dev-width.test` and log in as "system" (using the password in config.yaml).
 - Log into the VM with `vagrant ssh` and switch to the DW user with `sudo -iu dw`. Nothing should require a password, and dw can sudo to restart apache or whatever (`sudo apache2ctl graceful`).
 - Have fun!
-    - DW code is at `~/dw`, and you should be able to fetch and push to your fork.
+    - DW code is at `~/dw`, and you should be able to fetch from and push to your fork.
     - I've got ag installed so you can search for stuff. `ag --help` for info.
     - Root disk looks like it's set to 20gb (dynamically allocated), which should hopefully last u long enough to hack on a few things.
 
@@ -18,28 +18,36 @@ hi. This brings up a disposable Dreamwidth dev instance, with all required servi
 
 ### Empowering the system user
 
-The system user starts with no permissions except the ability to give anyone any permission. So to make invite codes to create a second user, you first have to give _yourself_ the payments permission.
+The system user starts with no permissions except the ability to give anyone any permission. So to do basically anything, you first have to give _yourself_ the necessary permissions. Start with the payments permission, so you can create invite codes for additional scratch users.
 
 - http://www.dev-width.test/admin/priv/
 
+### Making invite codes
+
+Use the admin console.
+
+- http://www.dev-width.test/admin/console
+
+`make_invites <username> <count> <reason>`
+
 ### Email
 
-You need to verify email addresses for your DW accounts to be able to do anything fun (like post comments), but your real email provider is DEFINITELY not accepting anything from this suspicious object.
+DW accounts need to verify email addresses to do anything fun (like post comments), but your real email provider is DEFINITELY not accepting anything from this suspicious object.
 
-So you need to enter `dw@dev-width.post` as the email address for your test accounts. To check that mailbox, log into the VM as the `dw` user (see above) and run `mutt`.
+So we have a local mailbox you can use. Just enter `dw@dev-width.post` as the email for all your test accounts. To check that mailbox, log into the VM as the `dw` user (see above) and run `mutt`.
 
 ## Stuff that ain't automated yet or is kinda busted but I'm sorta workin on it
 
 ### DNS
 
-You just can't DW with /etc/hosts. Too much subdomain shenanigans. The main options seem to be:
+You have to be able to reach your dev instance with a web browser, but you can't just add it to /etc/hosts because DW uses approximately infinity subdomains. Your main options seem to be:
 
 #### Mac/Linux: dnsmasq.
 
 I got this working. Seems fine.
 
 - [Relevant bit on the DW wiki](http://wiki.dreamwidth.net/wiki/index.php/Subdomain_setup#Local_development_via_dnsmasq)
-- [A good post with instructions](https://passingcuriosity.com/2013/dnsmasq-dev-osx/)
+- [A good post with mac instructions](https://passingcuriosity.com/2013/dnsmasq-dev-osx/)
 - brew install it.
 - config file at `/usr/local/etc/dnsmasq.conf`
     - uncomment `domain-needed` and `bogus-priv`
@@ -71,7 +79,6 @@ When you're done, remember to set your phone's proxy settings back to "off" and 
     - is this thing really necessary??? or can I just leave it commented out? (this was one of the things that rode along with `Bundle::CPAN`.)
 - the DB/asset-compile setup scripts should work now, but I've never tested em.
 - need to double-check that gearman is running correctly.
-
 
 ## Improving this dev setup
 
