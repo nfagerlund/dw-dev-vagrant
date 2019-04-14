@@ -71,7 +71,7 @@ I'm using the old puppetlabs vagrant box and it looks like its root disk is set 
 - But the _correctly stupid_ approach is to just email localhost and check the mailbox with mutt!
 - Except that dw won't let you set an email that's on its own domain name, since it sometimes uses those for a paid feature.
 - So the move is to use a _second_ domain name that resolves to the same host.
-- but, dw doesn't consider user@rando.test to be an acceptable email address, and .test is the best practice for throwaway dev domains.
+- but also, dw doesn't consider scrub@localhost or rando@fake.test to have acceptable domain names.
     - This is controlled by `dw_free/htdocs/inc/tlds`, and you can edit that to allow .test domains.
     - But, I haven't found a way to override that in a persistent way that can survive checking out a new branch. Maybe there is one, idk yet.
 - anyway, this is why trying to be lawful good always gets you into trouble, fuck that. let's just pick a technically unsafe but rather unlikely legal TLD for our mail alias.
