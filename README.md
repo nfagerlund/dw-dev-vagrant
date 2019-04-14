@@ -71,13 +71,6 @@ TBH at this point you probably need to actually set up DNS on your local network
 
 When you're done, remember to set your phone's proxy settings back to "off" and kill the SSH forwarding process on your Mac. (It stays foregrounded in your terminal, so at least you're not likely to forget it and leave it running.)
 
-## Stuff that might be hosed, won't know until I start another from-scratch build and let it crank for a few hours:
-
-- `Term::ReadLine::Perl` can't be installed noninteractively because if you pipe `yes` to it it just goes into an infinite loop. I let that damn thing run for like half an hour before I noticed.
-    - is this thing really necessary??? or can I just leave it commented out? (this was one of the things that rode along with `Bundle::CPAN`.)
-- the DB/asset-compile setup scripts should work now, but I've never tested em.
-- need to double-check that gearman is running correctly.
-
 ## Improving this dev setup
 
 good gracious, please do.
