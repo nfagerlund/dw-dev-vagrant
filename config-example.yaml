@@ -13,10 +13,10 @@ dw_dev::dw_db_user_password: "snthueoa"
 dw_dev::root_db_user_password: "aoeuhtns"
 
 # Your GitHub username! Make sure you've already forked dreamwidth/dw-free.
-dw_dev::developer_github: "nfagerlund"
+dw_dev::developer_github: "example"
 # Info used if you commit any changes from the dev server.
-dw_dev::developer_name: "Nick Fagerlund"
-dw_dev::developer_email: "nick.fagerlund@gmail.com"
+dw_dev::developer_name: "Onion Knight"
+dw_dev::developer_email: "unconfigured@example.com"
 
 # Optional git treeish to update dw-free to:
 # dw_dev::dw_free_commit: 'upstream/develop'
