@@ -1,18 +1,67 @@
 # dw-dev-vagrant
 
-hi.
+hi. This brings up a disposable Dreamwidth dev instance, with all required services configured and running (the workers are up, blobstore is configured so you can upload icons, etc.).
 
-[these are the instructions I'm automating.](http://wiki.dwscoalition.org/wiki/index.php/Dreamwidth_Scratch_Installation)
+- Fork dreamwidth/dw-free.
+- Clone this repo.
+- Copy `config-example.yaml` to `config.yaml` and edit as needed.
+- `vagrant up`
+- [Commit whatever DNS Crimes you gotta](#dns) to make sure your normal computer can reach the VM at `dev-width.test` and all subdomains thereof.
+- Browse to `http://dev-width.test` and log in as "system" (using the password in config.yaml).
+- Log into the VM with `vagrant ssh` and switch to the DW user with `sudo -iu dw`. Nothing should require a password, and dw can sudo to restart apache or whatever (`sudo apache2ctl graceful`).
+- Have fun!
+    - DW code is at `~/dw`, and you should be able to fetch and push to your fork.
+    - I've got ag installed so you can search for stuff. `ag --help` for info.
+    - Root disk looks like it's set to 20gb (dynamically allocated), which should hopefully last u long enough to hack on a few things.
 
-when iterating more quickly, the command you need for refreshing is `vagrant provision --provision-with puppet`
+## Dealing with Dreamwidth accounts
 
-Wanna log in as the dw user to muck around with code and run scripts? `vagrant ssh` and then `sudo -iu dw`. nothing should require a password, and dw can sudo to restart apache or what have u.
+### Empowering the system user
 
-I've got ag installed so you can search for stuff. `ag --help` for info.
+The system user starts with no permissions except the ability to give anyone any permission. So to make invite codes to create a second user, you first have to give _yourself_ the payments permission.
 
-there's a git config in there to keep me from going bonkers. mess with it as needed.
+- http://www.dev-width.test/admin/priv/
 
-I'm using the old puppetlabs vagrant box and it looks like its root disk is set at 20gb (dynamically allocated), which should hopefully last u long enough to hack on a few things before it needs to be retired.
+### Email
+
+You need to verify email addresses for your DW accounts to be able to do anything fun (like post comments), but your real email provider is DEFINITELY not accepting anything from this suspicious object.
+
+So you need to enter `dw@dev-width.post` as the email address for your test accounts. To check that mailbox, log into the VM as the `dw` user (see above) and run `mutt`.
+
+## Stuff that ain't automated yet or is kinda busted but I'm sorta workin on it
+
+### DNS
+
+You just can't DW with /etc/hosts. Too much subdomain shenanigans. The main options seem to be:
+
+#### Mac/Linux: dnsmasq.
+
+I got this working. Seems fine.
+
+- [Relevant bit on the DW wiki](http://wiki.dreamwidth.net/wiki/index.php/Subdomain_setup#Local_development_via_dnsmasq)
+- [A good post with instructions](https://passingcuriosity.com/2013/dnsmasq-dev-osx/)
+- brew install it.
+- config file at `/usr/local/etc/dnsmasq.conf`
+    - uncomment `domain-needed` and `bogus-priv`
+    - set `listen-address` to the host mac's IP address on the bridged network, plus the loopback address. comma separated.
+    - set `address=/dev-width.test/<BOX'S BRIDGED IP>`
+        - UGH, which will be different on every run, I wonder if https://github.com/mattes/vagrant-dnsmasq is plausible for handling this.
+- start it with `sudo brew services start dnsmasq` (it'll fail to get a port without the sudo.)
+    - it should ask for firewall permissions at this point.
+- `sudo mkdir /etc/resolver` if it doesn't exist.
+- create file `/etc/resolver/test`, with contents `nameserver 127.0.0.1`. Now the host mac will hit dnsmasq for `.test` domains.
+
+#### Windows: Acrylic?
+
+I don't know anything about this, [but StackOverflow consensus seems bullish on it.](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file)
+
+#### iOS: Socks proxy through your Mac
+
+TBH at this point you probably need to actually set up DNS on your local network, but if you just want to test a one-off, I got this working fine without having to install any extra stuff anywhere.
+
+[This brief tutorial had everything I needed.](https://gist.github.com/austinhappel/5614113)
+
+When you're done, remember to set your phone's proxy settings back to "off" and kill the SSH forwarding process on your Mac. (It stays foregrounded in your terminal, so at least you're not likely to forget it and leave it running.)
 
 ## Stuff that might be hosed, won't know until I start another from-scratch build and let it crank for a few hours:
 
@@ -23,56 +72,16 @@ I'm using the old puppetlabs vagrant box and it looks like its root disk is set 
 - the DB/asset-compile setup scripts should work now, but I've never tested em.
 - need to double-check that gearman is running correctly.
 
-## Stuff that's just manual because it's part of the application and that's life
 
-- system user has no permissions except the ability to give anyone any permission. so to make invite codes to create a second user, you first have to give yourself the payments permission.
-    - http://www.dev-width.test/admin/priv/
-- system user doesn't have an email set up so probably can't comment on posts or do some other stuff.
-    - just set up an email and verify it
-    - but the only email address that works by default is dw@dev-width.post.
-        - or I guess vagrant@dev-width.post if you want to be a complete deviant. feel free to create more OS user accounts if you want, but it's easier to just use the same email for all your fake users.
-        - see "email heck" below.
-    - to check your mail, ssh in, `sudo -iu dw`, and then run `mutt`.
-        - arrow keys, enter, q. theoretically you can do cool stuff with mutt, but uhhhhhh seems hard.
-        - depending on your terminal you might be able to cmd-click URLs to open them in your desktop browser; at least iterm2 does that, and they probably learned it from WATCHING YOU, DAD.
+## Improving this dev setup
 
-## Stuff that ain't automated yet or is kinda busted but I'm sorta workin on it
+good gracious, please do.
 
-### networking heck:
+[these are the instructions I'm automating.](http://wiki.dwscoalition.org/wiki/index.php/Dreamwidth_Scratch_Installation) They're missing some bits (uncommenting the blob store stuff is basically mandatory, and it doesn't tell you about gearman).
 
-- you just can't DW with /etc/hosts. too much subdomain shenanigans.
-    - I got dnsmasq figured out tho:
-        - http://wiki.dreamwidth.net/wiki/index.php/Subdomain_setup#Local_development_via_dnsmasq
-        - https://passingcuriosity.com/2013/dnsmasq-dev-osx/
-        - brew install it.
-        - config file at `/usr/local/etc/dnsmasq.conf`
-            - uncomment `domain-needed` and `bogus-priv`
-            - set `listen-address` to the host mac's IP address on the bridged network, plus the loopback address. comma separated.
-            - set `address=/dev-width.test/<BOX'S BRIDGED IP>`
-                - UGH, which will be different on every run, I wonder if https://github.com/mattes/vagrant-dnsmasq is plausible for handling this.
-        - start it with `sudo brew services start dnsmasq` (it'll fail to get a port without the sudo.)
-            - it should ask for firewall permissions at this point.
-        - create dir `/etc/resolver` if it doesn't exist.
-        - create file `/etc/resolver/test`, contents `nameserver 127.0.0.1`. Now host mac will hit dnsmasq for `.test` domains.
-        - I was worried this would be hell because mojave, but no, I just forgot my fuckin sudo! we're golden!!
+when iterating more quickly, the command you need for refreshing is `vagrant provision --provision-with puppet`
 
-## Stuff where I just got no fuckin clue
+All the Puppet modules are just vendored because I'm lazy and I assume you are too. `dw_dev` is the only unique one.
 
-- IDK if bridged mode networking is actually good to be using here (spoiler, probably not), but I never did figure out how to master virtualbox's multi-adapter whoopie-cushion tornado. ugh. Maybe later.
+IDK if bridged mode networking is actually good to be using here (spoiler, probably not), but I never did figure out how to master virtualbox's multi-adapter whoopie-cushion tornado. ugh. Maybe later.
 
-## Appendix: Stuff where I got it figured out but I don't want to delete my angry WIP notes about it yet
-
-### email heck:
-
-- You need to confirm an email address before your test users can post comments.
-- there is no way in hell that your shitbox VM on a centurylink dynamic IP is successfully sending anything to your gmail this century.
-- you cannot configure dw to use the kind of smtp server you probably have access to, don't bother looking into it.
-- guess you could just get multiple things configured properly on your home network and email your fridge or something.
-- But the _correctly stupid_ approach is to just email localhost and check the mailbox with mutt!
-- Except that dw won't let you set an email that's on its own domain name, since it sometimes uses those for a paid feature.
-- So the move is to use a _second_ domain name that resolves to the same host.
-- but also, dw doesn't consider scrub@localhost or rando@fake.test to have acceptable domain names.
-    - This is controlled by `dw_free/htdocs/inc/tlds`, and you can edit that to allow .test domains.
-    - But, I haven't found a way to override that in a persistent way that can survive checking out a new branch. Maybe there is one, idk yet.
-- anyway, this is why trying to be lawful good always gets you into trouble, fuck that. let's just pick a technically unsafe but rather unlikely legal TLD for our mail alias.
-- IIRC no one cool ever gets to have a .post domain, so dev-width.post it is.
