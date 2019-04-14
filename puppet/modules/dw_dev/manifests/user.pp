@@ -33,6 +33,7 @@ class dw_dev::user (
     }),
     owner => $dw_user,
     group => $dw_user,
+    replace => false,
   }
 
   file_line {'g':
