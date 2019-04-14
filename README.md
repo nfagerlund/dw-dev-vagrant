@@ -90,3 +90,7 @@ All the Puppet modules are just vendored because I'm lazy and I assume you are t
 
 IDK if bridged mode networking is actually good to be using here (spoiler, probably not), but I never did figure out how to master virtualbox's multi-adapter whoopie-cushion tornado. ugh. Maybe later.
 
+## License(s)
+
+- Like I said, I vendored a lot of Puppet modules, so I guess I'm accidentally a distro now. They all ride under the terms of their original licenses, which are vendored right along with em. Mostly Apache 2, small GPL contingent, one Perl Artistic.
+- The stuff I wrote is all in the dw_dev module, which I'm making available under the Apache 2 licence.
