@@ -16,6 +16,7 @@ hi. This brings up a disposable Dreamwidth dev instance, with all required servi
 - Copy `config-example.yaml` to `config.yaml` and edit as needed.
 - Make sure you're not running on battery and are on an unmetered internet connection.
 - `vagrant up`
+    - It'll ask you which host network interface to bridge to. Probably choose your main wifi interface, which on a modern laptop is usually listed as en0.
     - Be patient. It might take maybe an hour, I haven't timed it. I do know that there are two CPAN modules in particular that take _forever_ to build (LWP::UserAgent::Paranoid and Paws::S3?) and give no feedback, but they do eventually install correctly.
 
 ### Once it's up
