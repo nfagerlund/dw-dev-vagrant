@@ -6,11 +6,12 @@ hi. This brings up a disposable Dreamwidth dev instance, with all required servi
 - Clone this repo.
 - Copy `config-example.yaml` to `config.yaml` and edit as needed.
 - `vagrant up`
+    - Be patient. It might take maybe an hour, I haven't timed it. I do know that there are two CPAN modules in particular that take _forever_ to build (LWP::UserAgent::Paranoid and Paws::S3?), but they do eventually install correctly.
 - [Commit whatever DNS Crimes you gotta](#dns) to make sure your normal computer can reach the VM at `dev-width.test` and all subdomains thereof. (It'll print a message with its IP addresses after it's all the way up; use the bridged one on your local network, not the NAT-ted one.)
 - Browse to `http://dev-width.test` and log in as "system" (using the password in config.yaml).
 - Log into the VM with `vagrant ssh` and switch to the DW user with `sudo -iu dw`. Nothing should require a password, and dw can sudo to restart apache or whatever (`sudo apache2ctl graceful`).
 - Have fun!
-    - DW code is at `~/dw`, and you should be able to fetch from and push to your fork.
+    - DW code is at `~/dw`, and you should be able to fetch from and push to your fork. The upstream is called "upstream" instead of "origin", because IMO you should go out of your way to never get confused about which fork is yours. You can `git remote add origin <url>` if you absolutely must.
     - I've got ag installed so you can search for stuff. `ag --help` for info.
     - Root disk looks like it's set to 20gb (dynamically allocated), which should hopefully last u long enough to hack on a few things.
 
@@ -32,7 +33,7 @@ Use the admin console.
 
 ### Email
 
-DW accounts need to verify email addresses to do anything fun (like post comments), but your real email provider is DEFINITELY not accepting anything from this suspicious object.
+DW accounts need to verify email addresses to do anything fun (like post comments), but your real email provider is DEFINITELY not accepting anything from this Suspicious Object.
 
 So we have a local mailbox you can use. Just enter `dw@dev-width.post` as the email for all your test accounts. To check that mailbox, log into the VM as the `dw` user (see above) and run `mutt`.
 
