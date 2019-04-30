@@ -27,6 +27,8 @@
     suppp = submodule update --init
     dammit = remote rename origin upstream
     rabies = rebase
+    yolo = reset --hard @{u}
+        # https://stackoverflow.com/questions/19961041/generic-git-reset-to-default-upstream-head
 [merge]
     defaultToUpstream = true
 [push]
