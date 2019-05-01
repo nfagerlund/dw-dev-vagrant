@@ -189,6 +189,7 @@ class dw_dev::prerequisites (
     'Paws::S3',
     'Net::DNS',
     'Text::Fuzzy',
+    'JSON::Validator',
   ]
 
   include cpanm
