@@ -190,6 +190,8 @@ class dw_dev::prerequisites (
     'Net::DNS',
     'Text::Fuzzy',
     'JSON::Validator',
+    'Perl::Tidy',
+    'Test::Code::TidyAll',
   ]
 
   include cpanm
