@@ -137,6 +137,7 @@ class dw_dev::prerequisites (
     ensure => present,
   }
   contain apache::mod::perl
+  contain apache::mod::headers
 
   class {'mysql::server':
     root_password => $root_db_user_password,
