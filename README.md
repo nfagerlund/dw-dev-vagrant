@@ -80,6 +80,8 @@ I got this working. Seems fine.
 
 I don't know anything about this, [but StackOverflow consensus seems bullish on it.](https://stackoverflow.com/questions/138162/wildcards-in-a-windows-hosts-file)
 
+**Edit:** I got this working on one of those free IE8 VMs, and it works fine. I was in a hurry and forgot to write down what I did, but the docs and default config file are fairly readable.
+
 ### iOS: Socks proxy through your Mac
 
 TBH at this point you probably need to actually set up DNS on your local network, but if you just want to test a one-off, I got this working fine without having to install any extra stuff anywhere.
