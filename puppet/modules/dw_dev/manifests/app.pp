@@ -57,7 +57,7 @@ class dw_dev::app (
     owner => $dw_user,
     group => $dw_user,
     provider => git,
-    branch => 'develop',
+    branch => 'master',
     revision => $dw_free_commit,
     remote => $developer_github, # We assume you're here to hack -free.
     source => {
