@@ -19,7 +19,7 @@ dw_dev::developer_name: "Onion Knight"
 dw_dev::developer_email: "unconfigured@example.com"
 
 # Optional git treeish to update dw-free to:
-# dw_dev::dw_free_commit: 'upstream/develop'
+# dw_dev::dw_free_commit: 'upstream/master'
 
 # ^^ With this off, we initially check out <YR GITHUB>/develop and then leave it
 # alone, assuming that you're handling it from there. If you set this, every
