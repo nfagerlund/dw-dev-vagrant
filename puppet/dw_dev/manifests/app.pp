@@ -103,6 +103,17 @@ class dw_dev::app (
     group => $dw_user,
   }
 
+  # chkconfig.pl fails if this file is not present.
+  # Set to always copy over the file, since the comments say not to override it
+  # in place.
+  file {'config.pl':
+    path => "${ljhome}/etc/config.pl",
+    ensure => file,
+    source => "${ljhome}/etc/config.pl.example",
+    owner => $dw_user,
+    group => $dw_user,
+  }
+
   # The actual config files. I recommend editing the templates when you need to
   # change settings, so they'll survive across both restarts and the occasional
   # total dev environment wipe. But if you'd rather not, you can set the
