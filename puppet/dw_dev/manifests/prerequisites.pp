@@ -27,6 +27,7 @@ class dw_dev::prerequisites (
     'unzip',
     'links',
     'vim',
+    'libpng-dev',
     'libclass-autouse-perl',
     'libdatetime-perl',
     'libcache-memcached-perl',
@@ -42,6 +43,7 @@ class dw_dev::prerequisites (
     'libclass-data-inheritable-perl',
     'libclass-trigger-perl',
     'libcrypt-dh-perl',
+    'liblocale-codes-perl',
     'libmath-bigint-gmp-perl',
     'liburi-fetch-perl',
     'libgd-graph-perl',
@@ -193,6 +195,19 @@ class dw_dev::prerequisites (
     'JSON::Validator',
     'Perl::Tidy',
     'Test::Code::TidyAll',
+    'Authen::OATH',
+    'Authen::Passphrase::BlowfishCrypt',
+    'Authen::Passphrase::Clear',
+    'Convert::Base32',
+    'CryptX',
+    'Imager::File::PNG',
+    'Imager::QRCode',
+    'Log::Log4perl::Appender::Elasticsearch::Bulk',
+    'Math::Random::Secure',
+    'Net::Subnet',
+    'Sphinx::Search',
+    'Test::MockObject',
+    'UUID::Tiny',
   ]
 
   include cpanm
@@ -200,6 +215,17 @@ class dw_dev::prerequisites (
     ensure => present,
     test => false,
     require => Class['cpanm'],
+  }
+
+  # Out of date versions installed by default
+  $update = [
+    'CGI',
+    'Captcha::reCAPTCHA',
+  ]
+  cpanm {$update:
+    ensure => latest,
+    require => Class['cpanm'],
+    test => false,
   }
 
   # Don't waste cycles running the puppet agent and mco services

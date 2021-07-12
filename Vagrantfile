@@ -15,8 +15,7 @@ end
 # backwards compatibility). Please don't change it unless you know what
 # you're doing.
 Vagrant.configure("2") do |config|
-  config.vm.box = "puppetlabs/ubuntu-16.04-64-puppet"
-  config.vm.box_version = "1.0.0"
+  config.vm.box = "debian/buster64"
 
   # Create a forwarded port mapping which allows access to a specific port
   # within the machine from a port on the host machine. In the example below,
@@ -38,6 +37,9 @@ Vagrant.configure("2") do |config|
   # your network.
   config.vm.network "public_network"
   config.vm.hostname = hostname
+
+  # Install puppet into the base image
+  config.vm.provision "shell", inline: "apt-get install --yes puppet"
 
   # Share an additional folder to the guest VM. The first argument is
   # the path on the host to the actual folder. The second argument is
@@ -63,7 +65,6 @@ Vagrant.configure("2") do |config|
   end
 
   config.vm.provision "puppet", run: "always" do |pup|
-    pup.binary_path = "/opt/puppetlabs/bin"
     pup.environment_path = ["vm", "/etc/puppetlabs/code/environments"]
     pup.environment = "production"
   end
