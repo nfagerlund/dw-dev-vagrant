@@ -8,5 +8,5 @@ mod 'puppetlabs/vcsrepo'
 
 mod 'alternatives', :git => 'https://github.com/voxpupuli/puppet-alternatives'
 mod 'augeas', :git => 'https://github.com/camptocamp/puppet-augeas'
-mod 'cpanm', :git => 'https://github.com/martindemello/puppet-cpanm.git'
+mod 'cpanm', :git => 'https://github.com/jamesmcdonald/puppet-cpanm'
 mod 'postfix', :git => 'https://github.com/camptocamp/puppet-postfix'
