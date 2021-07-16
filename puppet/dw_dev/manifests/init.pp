@@ -45,10 +45,18 @@ class dw_dev (
     keep_local_config_edits => $keep_local_config_edits,
   }
 
+  class {'dw_dev::test':
+    dw_user => $dw_user,
+    ljhome => $ljhome,
+    dw_db_user => $dw_db_user,
+    dw_db_user_password => $dw_db_user_password,
+  }
+
   contain([
     Class['dw_dev::prerequisites'],
     Class['dw_dev::user'],
     Class['dw_dev::app'],
+    Class['dw_dev::test'],
   ])
 
   ## The worker manager service:
