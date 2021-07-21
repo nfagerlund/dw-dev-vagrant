@@ -192,8 +192,8 @@ class dw_dev::prerequisites (
     'Paws::S3',
     'Net::DNS',
     'Text::Fuzzy',
-    'JSON::Validator',
-    'Perl::Tidy',
+    'JSON::Validator@3.25',
+    'Perl::Tidy@20190601',
     'Test::Code::TidyAll',
     'Authen::OATH',
     'Authen::Passphrase::BlowfishCrypt',
@@ -208,6 +208,8 @@ class dw_dev::prerequisites (
     'Sphinx::Search',
     'Test::MockObject',
     'UUID::Tiny',
+    'CGI@4.50',
+    'Captcha::reCAPTCHA@0.99',
   ]
 
   include cpanm
@@ -215,17 +217,6 @@ class dw_dev::prerequisites (
     ensure => present,
     test => false,
     require => Class['cpanm'],
-  }
-
-  # Out of date versions installed by default
-  $update = [
-    'CGI',
-    'Captcha::reCAPTCHA',
-  ]
-  cpanm {$update:
-    ensure => latest,
-    require => Class['cpanm'],
-    test => false,
   }
 
   # Don't waste cycles running the puppet agent and mco services
