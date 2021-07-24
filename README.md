@@ -8,12 +8,14 @@ hi. This brings up a disposable Dreamwidth dev instance, with all required servi
 
 - Install [VirtualBox](https://www.virtualbox.org/).
 - Install [Vagrant](https://www.vagrantup.com/).
+  - You will probably need to install the [vagrant-vbguest](https://github.com/dotless-de/vagrant-vbguest) plugin as well
 - Fork [dreamwidth/dw-free](https://github.com/dreamwidth/dw-free/) to your own account.
 
 ### Run the thing
 
 - Clone this repo.
 - Copy `config-example.yaml` to `config.yaml` and edit as needed.
+- Install the puppet modules (see puppet/README.md for details)
 - Make sure you're not running on battery and are on an unmetered internet connection.
 - `vagrant up`
     - It'll ask you which host network interface to bridge to. Probably choose your main wifi interface, which on a modern laptop is usually listed as en0.
@@ -98,11 +100,8 @@ good gracious, please do.
 
 when iterating more quickly, the command you need for refreshing is `vagrant provision --provision-with puppet`
 
-All the Puppet modules are just vendored because I'm lazy and I assume you are too. `dw_dev` is the only unique one.
-
 IDK if bridged mode networking is actually good to be using here (spoiler, probably not), but I never did figure out how to master virtualbox's multi-adapter whoopie-cushion tornado. ugh. Maybe later.
 
 ## License(s)
 
-- Like I said, I vendored a lot of Puppet modules, so I guess I'm accidentally a distro now. They all ride under the terms of their original licenses, which are vendored right along with em. Mostly Apache 2, small GPL contingent, one Perl Artistic.
 - The stuff I wrote is all in the dw_dev module, which I'm making available under the Apache 2 licence.

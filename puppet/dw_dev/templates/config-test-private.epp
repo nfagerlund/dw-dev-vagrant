@@ -1,0 +1,23 @@
+<%- |
+  String $dw_db_user_password,
+  String $dw_db_user,
+| -%>
+{
+    ### Copy this file into ext/local/t to contain custom database information
+    package DW::PRIVATE;
+
+    %DBINFO = (
+        master => {
+            dbname => "test_master",
+            user => "<%= $dw_db_user %>",
+            pass => "<%= $dw_db_user_password %>",
+        },
+        theschwartz => {
+            dbname => "test_schwartz",
+            user => "<%= $dw_db_user %>",
+            pass => "<%= $dw_db_user_password %>",
+        }
+    );
+}
+
+1;

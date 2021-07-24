@@ -1,0 +1,18 @@
+#!/bin/sh
+
+# NOTE: For some reason I was unable to get the commands below working in
+# puppet/dw_dev/manifests/test.pp so I fell back to sourcing and executing this
+# file instead, after creating the databases via puppet. I've left the attempt
+# commented out in test.pp.
+
+set -xe
+
+export DW_TEST=1
+
+$LJHOME/bin/upgrading/update-db.pl -r --innodb
+$LJHOME/bin/upgrading/update-db.pl -r --innodb # at least for now we have to run this twice
+$LJHOME/bin/upgrading/update-db.pl -r --cluster=all --innodb
+$LJHOME/bin/upgrading/update-db.pl -r --cluster=all --innodb # this one too
+$LJHOME/bin/upgrading/update-db.pl -p
+
+$LJHOME/bin/upgrading/texttool.pl load
